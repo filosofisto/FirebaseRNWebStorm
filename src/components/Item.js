@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 export default class Item extends React.Component {
 
@@ -28,6 +28,9 @@ export default class Item extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    margin10: {
+        margin: 10
+    },
     listItemText: {
         fontSize: 20,
         color: '#000000',
