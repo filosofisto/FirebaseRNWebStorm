@@ -2,6 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import FirebaseService from "../services/FirebaseService";
 import Item from '../components/Item';
+import Header from "../components/Header";
 
 export default class ListItemsScreen extends React.Component {
 
@@ -20,7 +21,7 @@ export default class ListItemsScreen extends React.Component {
 
         return (
             <ScrollView style={styles.margin10}>
-                <View style={styles.header}><Text style={styles.textHeader}>React-Native Firebase</Text></View>
+                <Header/>
                 <View style={styles.fullWidth}>
                     {
                         items && items.map(
