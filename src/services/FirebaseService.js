@@ -20,5 +20,15 @@ export default class FirebaseService {
 
                 callback(items);
             });
+    };
+
+    static addItem = (item, onsuccess, onerror) => {
+        db.collection("items").add(item)
+            .then(function(docRef) {
+                onsuccess(item);
+            })
+            .catch(function(error) {
+                onerror();
+            });
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, Button} from 'react-native';
 import FirebaseService from "../services/FirebaseService";
 import Item from '../components/Item';
 import Header from "../components/Header";
@@ -18,10 +18,17 @@ export default class ListItemsScreen extends React.Component {
 
     render() {
         const { items } = this.state;
+        const { navigate } = this.props.navigation;
 
         return (
             <ScrollView style={styles.margin10}>
                 <Header/>
+                <Button
+                    onPress={() => navigate('NewItemScreen')}
+                    title="New"
+                    color="#841584"
+                    accessibilityLabel="New item"
+                />
                 <View style={styles.fullWidth}>
                     {
                         items && items.map(
