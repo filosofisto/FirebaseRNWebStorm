@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View, Button} from 'react-native';
+import {ScrollView, StyleSheet, View, Button, Alert} from 'react-native';
 import FirebaseService from "../services/FirebaseService";
 import Item from '../components/Item';
 import Header from "../components/Header";
@@ -8,13 +8,31 @@ export default class ListItemsScreen extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state = { items: [] }
+        this.state = { items: [] };
+        this.remove = this.remove.bind(this);
     }
 
     componentDidMount() {
-        FirebaseService.getItems(dataIn => this.setState({items: dataIn}));
+        this.loadItems();
     }
+
+    loadItems() {
+        FirebaseService.getItems(
+            dataIn => this.setState({items: dataIn}),
+            error => Alert.alert('Erro', 'Erro ao consultar itens')
+        );
+    }
+
+    remove = (item) => {
+        FirebaseService.removeItem(
+            item,
+            () => {
+                Alert.alert('Sucesso', 'Registro removido com sucesso');
+                this.loadItems();
+            },
+            (error) => Alert.alert('Erro', 'Não foi possível remover o registro')
+        );
+    };
 
     render() {
         const { items } = this.state;
@@ -33,7 +51,11 @@ export default class ListItemsScreen extends React.Component {
                     {
                         items && items.map(
                             (item, index) => {
-                                return <Item item={item} index={index} key={index}/>
+                                return <Item
+                                            item={item}
+                                            index={index}
+                                            key={index}
+                                            handleRemove={this.remove}/>
                             }
                         )
                     }

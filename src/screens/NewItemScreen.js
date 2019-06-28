@@ -15,7 +15,7 @@ export default class NewItemScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { cliente: '', temperatura: 0, umidade: 0 };
+        this.state = { id: '', cliente: '', temperatura: 0, umidade: 0 };
     }
 
     addItem = () => {
@@ -23,6 +23,8 @@ export default class NewItemScreen extends React.Component {
     };
 
     addSuccess = item => {
+        // Importante manter o docId do documento para a operação de delete
+        this.setState({ id: item.documentId() });
         Alert.alert('Sucesso', 'Registro incluído com sucesso');
     };
 

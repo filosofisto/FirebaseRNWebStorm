@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import FirebaseService from "../services/FirebaseService";
 
 export default class Item extends React.Component {
 
@@ -8,7 +9,7 @@ export default class Item extends React.Component {
     }
 
     render() {
-        const { item, index } = this.props;
+        const { item, index, handleRemove } = this.props;
 
         return (
             <View style={[styles.margin10, styles.item]} key={index}>
@@ -21,6 +22,13 @@ export default class Item extends React.Component {
 
                     <Text style={styles.listItemHeader}> Cliente </Text>
                     <Text style={styles.listItemText}> {item.cliente} </Text>
+
+                    <TouchableHighlight
+                        style={styles.button}
+                        underlayColor="white"
+                        onPress={() => handleRemove(item)}>
+                        <Text style={styles.buttonText}>Remove</Text>
+                    </TouchableHighlight>
                 </View>
             </View>
         );
@@ -43,5 +51,22 @@ const styles = StyleSheet.create({
     item: {
         backgroundColor: '#c7c7c7',
         borderRadius: 20
+    },
+    buttonText: {
+        fontSize: 18,
+        color: 'white',
+        alignSelf: 'center'
+    },
+    button: {
+        height: 45,
+        flexDirection: 'row',
+        backgroundColor: 'red',
+        borderColor: 'red',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginBottom: 10,
+        marginTop: 10,
+        alignSelf: 'stretch',
+        justifyContent: 'center'
     }
 });
