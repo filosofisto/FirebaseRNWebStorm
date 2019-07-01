@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View, Button, Alert} from 'react-native';
+import {ScrollView, StyleSheet, View, Button, Alert, Text, TouchableHighlight} from 'react-native';
 import FirebaseService from "../services/FirebaseService";
 import Item from '../components/Item';
 import Header from "../components/Header";
@@ -10,9 +10,10 @@ export default class ListItemsScreen extends React.Component {
         super(props);
         this.state = { items: [] };
         this.remove = this.remove.bind(this);
+        this.addItem = this.addItem.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.loadItems();
     }
 
@@ -34,6 +35,16 @@ export default class ListItemsScreen extends React.Component {
         );
     };
 
+    addItem = (item) => {
+        FirebaseService.addItem(
+            item,
+            () => {
+                Alert.alert('Sucesso', 'Registro incluído com sucesso');
+            },
+            () => Alert.alert('Erro', 'Erro ao incluir item')
+        );
+    };
+
     render() {
         const { items } = this.state;
         const { navigate } = this.props.navigation;
@@ -41,12 +52,12 @@ export default class ListItemsScreen extends React.Component {
         return (
             <ScrollView style={styles.margin10}>
                 <Header/>
-                <Button
-                    onPress={() => navigate('NewItemScreen')}
-                    title="New"
-                    color="#841584"
-                    accessibilityLabel="New item"
-                />
+                <TouchableHighlight
+                    style={styles.button}
+                    underlayColor="white"
+                    onPress={() => navigate('NewItemScreen', { 'handleAddItem': (item) => this.addItem(item) })}>
+                    <Text style={styles.buttonText}>New Item</Text>
+                </TouchableHighlight>
                 <View style={styles.fullWidth}>
                     {
                         items && items.map(
@@ -96,5 +107,22 @@ const styles = StyleSheet.create({
     item: {
         backgroundColor: '#c7c7c7',
         borderRadius: 20
+    },
+    button: {
+        height: 45,
+        flexDirection: 'row',
+        backgroundColor: 'blue',
+        borderColor: 'blue',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginBottom: 10,
+        marginTop: 10,
+        alignSelf: 'stretch',
+        justifyContent: 'center'
+    },
+    buttonText: {
+        fontSize: 18,
+        color: 'white',
+        alignSelf: 'center'
     }
 });

@@ -12,17 +12,5 @@ const App = createAppContainer(MainNavigator);
 
 export default App;
 
-/*export default class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-        <ListItemsScreen/>
-    );
-  }
-}*/
 
 

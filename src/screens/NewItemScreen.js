@@ -1,36 +1,23 @@
 import React from 'react';
 import Header from "../components/Header";
-import {
-    View,
-    Text,
-    TouchableHighlight,
-    StyleSheet,
-    TextInput,
-    Alert
-} from 'react-native';
-import FirebaseService from "../services/FirebaseService";
+import {StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
 
 export default class NewItemScreen extends React.Component {
 
     constructor(props) {
         super(props);
 
+        this.handleChangeCliente = this.handleChangeCliente.bind(this);
+        this.handleChangeTemperatura = this.handleChangeTemperatura.bind(this);
+        this.handleChangeUmidade = this.handleChangeUmidade.bind(this);
+        this.prepareNewRecord = this.prepareNewRecord.bind(this);
+
         this.state = { id: '', cliente: '', temperatura: 0, umidade: 0 };
     }
 
-    addItem = () => {
-        FirebaseService.addItem(this.state, this.addSuccess, this.addError);
-    };
-
-    addSuccess = item => {
-        // Importante manter o docId do documento para a operação de delete
-        this.setState({ id: item.documentId() });
-        Alert.alert('Sucesso', 'Registro incluído com sucesso');
-    };
-
-    addError = () => {
-        Alert.alert('Erro', 'Erro ao incluir item');
-    };
+    prepareNewRecord() {
+        this.setState({ id: '', cliente: '', temperatura: 0, umidade: 0 });
+    }
 
     handleChangeCliente = text => {
         this.setState({
@@ -54,34 +41,28 @@ export default class NewItemScreen extends React.Component {
         }
     };
 
-    handleSubmit = () => {
-        this.addItem();
-        Alert.alert('Item saved successfully');
-    };
-
     render() {
-        const { navigate } = this.props.navigation;
+        const { params } = this.props.navigation.state;
 
         return (
             <View style={styles.main}>
                 <Header/>
-                <Text style={styles.title}>Add Item</Text>
+                <Text style={styles.title}>Novo Item</Text>
                 <TextInput style={styles.itemInput}
                            onChangeText={this.handleChangeCliente}
                            value={this.state.cliente}/>
                 <TextInput style={styles.itemInput}
                            onChangeText={this.handleChangeTemperatura}
-                           value={this.state.temperatura}/>
+                           value={this.state.temperatura.toString()}/>
                 <TextInput style={styles.itemInput}
                            onChangeText={this.handleChangeUmidade}
                            keyboardType={'numeric'}
-                           value={this.state.umidade}/>
+                           value={this.state.umidade.toString()}/>
                 <TouchableHighlight
                     style={styles.button}
                     underlayColor="white"
-                    onPress={this.handleSubmit}
-                >
-                    <Text style={styles.buttonText}>Add</Text>
+                    onPress={() => { params.handleAddItem(this.state); this.prepareNewRecord(); }}>
+                    <Text style={styles.buttonText}>Adicionar</Text>
                 </TouchableHighlight>
             </View>
         );
